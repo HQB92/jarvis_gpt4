@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import "./App.css";
 const { Configuration, OpenAIApi } = require("openai");
@@ -36,10 +36,10 @@ function VoiceRecognitionComponent() {
   };
 
   const recognition = new window.webkitSpeechRecognition();
-  recognition.lang = "es-LA";
+  recognition.lang = "es-ES";
   recognition.onresult = (event) => {
-    console.log(event.results[0][0].transcript);
-    setTranscript(event.results[0][0].transcript);
+    const transcript = event.results[0][0].transcript;
+    setTranscript(transcript);
   };
 
   const startListening = () => {
@@ -48,12 +48,15 @@ function VoiceRecognitionComponent() {
 
   const stopListening = () => {
     recognition.stop();
-    call();
+    if (transcript !== "") {
+      call();
+    }
   };
+
   useEffect(() => {
     handleRead();
-    console.log(repsuestaOpenAI);
-    console.log(transcript);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repsuestaOpenAI]);
 
   return (
